@@ -1,1 +1,4 @@
-drivers/firefox/wappalyzer.xpi
+wappalyzer-chrome.zip
+wappalyzer-firefox.xpi
+.windows_zip/*
+!.windows_zip/Download 7-Zip.hta

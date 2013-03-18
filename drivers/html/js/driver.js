@@ -1,5 +1,5 @@
 (function() {
-	if ( wappalyzer == null ) return;
+	if ( wappalyzer == null ) { return };
 
 	var w = wappalyzer;
 
@@ -8,13 +8,29 @@
 		 * Log messages to console
 		 */
 		log: function(args) {
-			if ( console != null ) console[args.type](args.message);
+			if ( console != null ) { console[args.type](args.message) };
 		},
 
 		/**
 		 * Initialize
 		 */
 		init: function() {
+			// Load apps.json
+			var xhr = new XMLHttpRequest();
+
+			xhr.open('GET', 'apps.json', true);
+
+			xhr.overrideMimeType('application/json');
+
+			xhr.onload = function() {
+				var json = JSON.parse(xhr.responseText);
+
+				w.categories = json.categories;
+				w.apps       = json.apps;
+			};
+
+			xhr.send(null);
+
 			window.document.addEventListener('DOMContentLoaded', function() {
 				w.analyze('google.com', 'http://google.com', {
 					html:    '<script src="jquery.js"><meta name="generator" content="WordPress"/>',
@@ -27,11 +43,11 @@
 		/**
 		 * Display apps
 		 */
-		displayApps: function(args) {
+		displayApps: function() {
 			document.getElementById('apps').innerHTML = '';
 
-			args.apps.map(function(app) {
-				document.getElementById('apps').innerHTML += '<img src="images/icons/' + app + '.ico" width="16" height="16"/> ' + app + '<br/>';
+			w.detected['http://google.com'].map(function(app) {
+				document.getElementById('apps').innerHTML += '<img src="images/icons/' + app + '.png" width="16" height="16"/> ' + app + '<br/>';
 			});
 		},
 
